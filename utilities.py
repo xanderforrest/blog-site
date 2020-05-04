@@ -1,18 +1,20 @@
 import json
 import sqlite3
 from datetime import datetime
-
-posts = [{"heading": "First blog post", "short": "Introduction", "date": "1st May 2020", "intro": "THIS IS FIRST BLOG POST", "image": "/static/im.png"},
-         {"heading": "Second blog post", "short": "Game",
-          "date": "2nd May 2020", "intro": "second BLOG POST", "image": "/static/woh.png"}]
+from uuid import uuid4
+import time
 
 
 class ContentManager:
     def __init__(self):
-        self.conn = sqlite3.connect("default.db")
+        self.conn = sqlite3.connect("default.db", check_same_thread=False)
         self.c = self.conn.cursor()
 
         self.validate_tables()
+
+    @staticmethod
+    def generate_id():
+        return str(uuid4()).replace("-", "")
 
     def validate_tables(self):
         create_posts = """
@@ -36,18 +38,27 @@ Image TEXT
 
         for p in raw_posts:
             np = dict()
+            np["id"] = p[0]
             np["heading"] = p[1]
             np["short"] = p[2]
-            np["date"] = datetime.utcfromtimestamp(p[3]).strftime("%A %d %B, %Y")
+            np["date"] = datetime.utcfromtimestamp(int(p[3])).strftime("%A %d %B, %Y")
             np["intro"] = p[4]
             np["image"] = p[5]
             clean_posts.append(np)
+            print(np)
 
         return clean_posts
 
+    def add_post(self, post_data):
+        """
+        Add a post to the DB from JSON format
+        :param post_data: Dictionary containing post information
+        """
 
+        pd = post_data
+        id = self.generate_id()
 
-
-
-
-
+        self.c.execute("""
+INSERT INTO TBLPosts VALUES ((?), (?), (?), (?), (?), (?));
+        """, (id, pd["heading"], pd["short"], pd["date"], pd["intro"], pd["image"]))
+        self.conn.commit()

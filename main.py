@@ -1,11 +1,13 @@
 from flask import Flask, render_template
+from utilities import ContentManager
 app = Flask(__name__)
 
-posts = [{"heading": "First blog post", "short": "Introduction", "date": "1st May 2020", "intro": "THIS IS FIRST BLOG POST", "image": "/static/im.png"},
-         {"heading": "Second blog post", "short": "Game", "date": "2nd May 2020", "intro": "second BLOG POST", "image": "/static/woh.png"}]
+CM = ContentManager()
+
 
 @app.route('/')
 def index():
+    posts = CM.get_posts()
     return render_template('index.html', posts=posts)
 
 
