@@ -45,7 +45,6 @@ Image TEXT
             np["intro"] = p[4]
             np["image"] = p[5]
             clean_posts.append(np)
-            print(np)
 
         return clean_posts
 

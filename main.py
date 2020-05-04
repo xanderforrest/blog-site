@@ -7,8 +7,13 @@ CM = ContentManager()
 
 @app.route('/')
 def index():
+    return "Hello"
+
+
+@app.route('/blog')
+def blog():
     posts = CM.get_posts()
-    return render_template('index.html', posts=posts)
+    return render_template('blog.html', posts=posts)
 
 
 if __name__ == '__main__':
