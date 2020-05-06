@@ -19,7 +19,7 @@ def blog():
 @app.route('/blog/<blogid>')
 def post(blogid):
     post_data = CM.get_post(blogid)
-    return str(post_data)
+    return render_template('post.html', post=post_data)
 
 
 if __name__ == '__main__':

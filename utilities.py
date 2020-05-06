@@ -25,6 +25,7 @@ class ContentManager:
         np["date"] = datetime.utcfromtimestamp(int(row[3])).strftime("%A %d %B, %Y")
         np["intro"] = row[4]
         np["image"] = row[5]
+        # np["content"] = row[6]
 
         return np
 
@@ -36,7 +37,8 @@ Heading TEXT,
 Short Text,
 Date INT,
 Intro TEXT,
-Image TEXT
+Image TEXT,
+Content TEXT
 );
 """
         self.c.execute(create_posts)
