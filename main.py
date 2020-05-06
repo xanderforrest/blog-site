@@ -16,5 +16,11 @@ def blog():
     return render_template('blog.html', posts=posts)
 
 
+@app.route('/blog/<blogid>')
+def post(blogid):
+    post_data = CM.get_post(blogid)
+    return str(post_data)
+
+
 if __name__ == '__main__':
     app.run(debug=True)

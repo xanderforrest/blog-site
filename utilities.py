@@ -16,6 +16,18 @@ class ContentManager:
     def generate_id():
         return str(uuid4()).replace("-", "")
 
+    @staticmethod
+    def convert_row_json(row):
+        np = dict()
+        np["id"] = row[0]
+        np["heading"] = row[1]
+        np["short"] = row[2]
+        np["date"] = datetime.utcfromtimestamp(int(row[3])).strftime("%A %d %B, %Y")
+        np["intro"] = row[4]
+        np["image"] = row[5]
+
+        return np
+
     def validate_tables(self):
         create_posts = """
 CREATE TABLE IF NOT EXISTS TBLPosts (
@@ -36,17 +48,21 @@ Image TEXT
         raw_posts = self.c.execute("SELECT * FROM TBLPosts").fetchall()
         clean_posts = []
 
-        for p in raw_posts:
-            np = dict()
-            np["id"] = p[0]
-            np["heading"] = p[1]
-            np["short"] = p[2]
-            np["date"] = datetime.utcfromtimestamp(int(p[3])).strftime("%A %d %B, %Y")
-            np["intro"] = p[4]
-            np["image"] = p[5]
+        for p in raw_posts:  # convert each row into a dict with post data
+            np = self.convert_row_json(p)
             clean_posts.append(np)
 
         return clean_posts
+
+    def get_post(self, pid):
+        """ Return Post Data by its ID """
+
+        raw_post = self.c.execute("SELECT * FROM TBLPosts WHERE PID = (?);", (pid,)).fetchone()
+        if raw_post:
+            post_data = self.convert_row_json(raw_post)
+            return post_data
+        else:
+            return None
 
     def add_post(self, post_data):
         """
