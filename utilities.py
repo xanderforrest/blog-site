@@ -25,7 +25,7 @@ class ContentManager:
         np["date"] = datetime.utcfromtimestamp(int(row[3])).strftime("%A %d %B, %Y")
         np["intro"] = row[4]
         np["image"] = row[5]
-        # np["content"] = row[6]
+        np["content"] = row[6]
 
         return np
 
