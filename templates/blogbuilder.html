@@ -4,7 +4,7 @@
 <div class="w3-center">
     <h1 style="font-size: 70px;"> Create blog post </h1>
 
-    <form action="" method="post">
+    <form action="" method="post" onsubmit="copyContent();">
         <label for="heading">Blog Title:</label>
         <input type="text" id="heading" name="heading">
 <br>
@@ -17,11 +17,17 @@
         <label for="image">Image link</label>
         <input type="text" id="image" name="image">
 <br>
-        <label for="content">Content</label>
-        <input type="text" id="content" name="content">
-<br>
+        <textarea name="content" style="display:none;" id="content"></textarea>
+        <label for="contentEditor">Content</label>
+        <input type="button" onclick="formatText('bold');" id="bold" value="Bold Text"/>
+        <input type="button" onclick="formatText('italic');" id="italic" value="Italics"/>
+        <input type="button" onclick="formatText('insertunorderedlist');" id="list" value="List"/>
+        <div class="w3-padding-large">
+            <div class="w3-border" id="contentEditor" contenteditable="true"></div>
+        </div>
         <button type="submit">Submit</button>
     </form>
 
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
 </div>
 {% endblock %}

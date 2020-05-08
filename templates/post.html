@@ -6,6 +6,6 @@
     <h3> {{post.short}} - {{post.date}} </h3>
     <img src="{{post.image}}" style="width:80%">
     <hr>
-    {{post.content}}
+    {{post.content|safe}}
 </div>
 {% endblock %}
