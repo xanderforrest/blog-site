@@ -1,10 +1,11 @@
 {% extends "index.html" %}
 
 {% block content %}
-<div class="w3-panel w3-padding-large"></div>
 <div class="w3-center">
     <h1 style="font-size: 70px;"> {{post.heading}} </h1>
     <h3> {{post.short}} - {{post.date}} </h3>
-    <img src="{{post.image}}" style="width:100%">
+    <img src="{{post.image}}" style="width:80%">
+    <hr>
+    {{post.content}}
 </div>
 {% endblock %}
