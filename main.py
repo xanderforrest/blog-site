@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, url_for, redirect
 from utilities import ContentManager
 app = Flask(__name__)
 
@@ -27,7 +27,9 @@ def new_post():
     if request.method == 'GET':
         return render_template('blogbuilder.html')
     elif request.method == 'POST':
-        return request.form["header"]
+        id = CM.add_post(request.form.to_dict())
+        if id:
+            return redirect(url_for("post", blogid=id))
 
 
 if __name__ == '__main__':

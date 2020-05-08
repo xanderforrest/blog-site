@@ -29,6 +29,21 @@ class ContentManager:
 
         return np
 
+    @staticmethod
+    def validate_post_data(pd):
+        """ Validate post data coming into the DB has the correct fields """
+
+        valid = {"heading": "", "short": "", "date": int(time.time()), "intro": "",
+                 "image": "", "content": ""}
+
+        for key in valid:
+            if key in pd.keys():
+                pass
+            else:
+                pd[key] = valid[key]
+
+        return pd
+
     def validate_tables(self):
         create_posts = """
 CREATE TABLE IF NOT EXISTS TBLPosts (
@@ -72,10 +87,12 @@ Content TEXT
         :param post_data: Dictionary containing post information
         """
 
-        pd = post_data
+        pd = self.validate_post_data(post_data)
         id = self.generate_id()
 
         self.c.execute("""
-INSERT INTO TBLPosts VALUES ((?), (?), (?), (?), (?), (?));
-        """, (id, pd["heading"], pd["short"], pd["date"], pd["intro"], pd["image"]))
+INSERT INTO TBLPosts VALUES ((?), (?), (?), (?), (?), (?), (?));
+        """, (id, pd["heading"], pd["short"], pd["date"], pd["intro"], pd["image"], pd["content"],))
         self.conn.commit()
+
+        return id
